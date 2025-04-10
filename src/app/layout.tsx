@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/layout/sidebar";
+import Header from "@/components/layout/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,12 +35,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
+
+        <Sidebar />
+
         <div className="flex min-h-screen">
 
-          <Sidebar />
+          <div className="hidden md:block md:w-64 lg:w-72" />
 
-          <div className="flex-1 ml-0 md:ml-64 lg:ml-72">
-            <main className="container mx-auto py-6 px-4 md:px-6">
+
+          <div className="flex-1 ml-0">
+
+            <Header />
+
+
+            <main className="container mx-auto py-2 px-4 md:px-6">
               {children}
             </main>
           </div>

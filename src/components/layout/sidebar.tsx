@@ -7,6 +7,7 @@ import { navigationItems } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+
 import {
     Menu,
     Compass,
@@ -16,6 +17,7 @@ import {
     Library
 } from "lucide-react";
 import { BiSolidHome } from "react-icons/bi";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 type IconMapType = {
     [key: string]: React.ReactNode;
@@ -62,7 +64,7 @@ export function Sidebar() {
                     </h2>
                     <div className="space-y-1 px-1">
                         {navigationItems.map((item) => (
-                            <div>
+                            <div key={item.name}>
                                 <Link
                                     key={item.name}
                                     href={item.href}
@@ -74,7 +76,6 @@ export function Sidebar() {
                                             : "text-sidebar-foreground"
                                     )}
                                 >
-
                                     <span className={cn(
                                         "rounded-md p-2",
                                         pathname === item.href
@@ -83,17 +84,20 @@ export function Sidebar() {
                                     )}>
                                         {getNavIcon(item.name)}
                                     </span>
-
-                                    <span className={cn(pathname === item.href ? "font-semibold text-white " : "font-medium text-gray-400")}>{item.name}</span>
+                                    <span className={cn(
+                                        pathname === item.href
+                                            ? "font-semibold text-white "
+                                            : "font-medium text-gray-400"
+                                    )}>
+                                        {item.name}
+                                    </span>
                                 </Link>
                             </div>
-
                         ))}
                     </div>
                 </div>
-
             </div>
-        </div >
+        </div>
     );
 
     return (
@@ -114,6 +118,10 @@ export function Sidebar() {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="p-0 border-r-0 w-[300px] bg-[#0B0B13]">
+
+                        <VisuallyHidden asChild>
+                            <h2>Navigation Menu</h2>
+                        </VisuallyHidden>
                         <SidebarContent />
                     </SheetContent>
                 </Sheet>
