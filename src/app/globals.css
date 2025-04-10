@@ -1,26 +1,286 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(
+    --font-poppins
+  ); /* 🔥 FONT SYSTEM REWIRED! SPECTRAL OBLITERATED! */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* 🖤 Very dark muted violet background */
+  --background: oklch(0.24 0.0266 290.79);
+
+  /* ⚪ Near-white foreground text (slight warm hue) */
+  --foreground: oklch(0.985 0.001 106.423);
+
+  /* 🟪 Deep desaturated indigo (slightly warmer than background) */
+  --card: oklch(0.15 0.02 265);
+
+  /* ⚪ Same bright neutral white as main foreground */
+  --card-foreground: oklch(0.985 0.001 106.423);
+
+  /* 🟪 Identical to `--card`, used for popovers */
+  --popover: oklch(0.15 0.02 265);
+
+  /* ⚪ Same white again, maintaining text consistency */
+  --popover-foreground: oklch(0.985 0.001 106.423);
+
+  /* 💜 Medium bold purple (main accent color) */
+  --primary: oklch(0.55 0.2 265);
+
+  /* ⚪ Consistent readable foreground over primary */
+  --primary-foreground: oklch(0.985 0.001 106.423);
+
+  /* 🟣 Desaturated lavender gray */
+  --secondary: oklch(0.43 0.0241 282.81);
+
+  /* 🧡 Soft warm yellow-orange (for contrast over secondary) */
+  --secondary-foreground: oklch(0.72 0.1765 35.68);
+
+  /* 🟣 Dark muted purple, lower contrast than `--secondary` */
+  --muted: oklch(0.22 0.05 265);
+
+  /* ☁️ Muted off-white with a subtle yellow hue */
+  --muted-foreground: oklch(0.709 0.01 56.259);
+
+  /* 🟣 Dim but noticeable purple for hover/active accents */
+  --accent: oklch(0.3 0.1 265);
+
+  /* ⚪ Standard light text color */
+  --accent-foreground: oklch(0.985 0.001 106.423);
+
+  /* 🔴 Bright attention red, ideal for destructive actions */
+  --destructive: oklch(0.704 0.191 22.216);
+
+  /* ⚪ Transparent white border */
+  --border: oklch(1 0 0 / 10%);
+
+  /* ⚪ Slightly denser for input outlines */
+  --input: oklch(1 0 0 / 15%);
+
+  /* 💜 Ring color matches primary (purple accent glow) */
+  --ring: oklch(0.55 0.2 265);
+
+  /* 📊 Chart Colors */
+  --chart-1: oklch(0.488 0.243 264.376); /* Vivid violet */
+  --chart-2: oklch(0.696 0.17 162.48); /* Emerald green */
+  --chart-3: oklch(0.769 0.188 70.08); /* Golden yellow */
+  --chart-4: oklch(0.627 0.265 303.9); /* Vibrant magenta */
+  --chart-5: oklch(0.645 0.246 16.439); /* Warm saturated red-orange */
+
+  /* 🟪 Sidebar color family (match card & popover) */
+  --sidebar: oklch(0.15 0.02 265);
+  --sidebar-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-primary: oklch(0.55 0.2 265);
+  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-accent: oklch(0.3 0.1 265);
+  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.55 0.2 265);
+
+  /* 📐 UI Design */
+  --radius: 0.75rem;
+
+  /* 🅰️ Font families */
+  --font-geist-sans: "Geist", system-ui, sans-serif;
+  --font-geist-mono: "Geist Mono", monospace;
+  --font-poppins: "Poppins", system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans text-base leading-relaxed;
+  }
+
+  h1 {
+    @apply font-serif text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl mb-6;
+  }
+
+  h2 {
+    @apply font-serif text-3xl font-bold tracking-tight md:text-4xl mb-4;
+  }
+
+  h3 {
+    @apply font-serif text-2xl font-bold tracking-tight md:text-3xl mb-3;
+  }
+
+  h4 {
+    @apply font-serif text-xl font-semibold tracking-tight mb-2;
+  }
+
+  h5 {
+    @apply text-lg font-semibold mb-2;
+  }
+
+  h6 {
+    @apply text-base font-semibold mb-2;
+  }
+
+  p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  a {
+    @apply text-primary hover:text-primary/80 transition-colors;
+  }
+
+  blockquote {
+    @apply font-serif pl-4 border-l-4 border-primary/30 italic my-6;
+  }
+
+  ul {
+    @apply list-disc pl-6 mb-4;
+  }
+
+  ol {
+    @apply list-decimal pl-6 mb-4;
+  }
+
+  li {
+    @apply mb-1;
+  }
+
+  code {
+    @apply font-mono text-sm px-1 py-0.5 bg-secondary/50 rounded;
+  }
+
+  pre {
+    @apply font-mono text-sm p-4 bg-secondary/50 rounded-lg overflow-x-auto mb-4;
+  }
+
+  hr {
+    @apply border-border my-8;
+  }
+
+  table {
+    @apply w-full border-collapse mb-4;
+  }
+
+  th {
+    @apply text-left p-2 border-b border-border font-semibold;
+  }
+
+  td {
+    @apply p-2 border-b border-border;
+  }
+
+  img {
+    @apply max-w-full h-auto rounded-lg;
+  }
+
+  figure {
+    @apply mb-4;
+  }
+
+  figcaption {
+    @apply font-serif text-sm text-muted-foreground mt-2 text-center italic;
+  }
+
+  small {
+    @apply text-sm text-muted-foreground;
+  }
+
+  button,
+  input,
+  select {
+    @apply font-sans;
+  }
+
+  textarea {
+    @apply font-serif;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply bg-background border border-input rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ring;
+  }
+
+  .video-title {
+    @apply font-serif text-xl font-semibold leading-tight line-clamp-2;
+  }
+
+  .video-description {
+    @apply font-sans text-sm text-muted-foreground leading-relaxed line-clamp-3;
+  }
+
+  .academic-name {
+    @apply font-serif font-medium text-foreground;
+  }
+
+  .academic-title {
+    @apply font-sans text-xs text-muted-foreground italic;
+  }
+
+  .research-quote {
+    @apply font-serif text-lg italic leading-relaxed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.font-poppins {
+  font-family: var(--font-poppins);
+}
+
+.typography-geist-poppins [class*="heading"],
+.typography-geist-poppins .prose h1,
+.typography-geist-poppins .prose h2,
+.typography-geist-poppins .prose h3,
+.typography-geist-poppins .prose h4,
+.typography-geist-poppins .prose blockquote {
+  font-family: var(--font-poppins);
+}
+
+.typography-geist-poppins .prose p,
+.typography-geist-poppins .prose ul,
+.typography-geist-poppins .prose ol {
+  font-family: var(--font-geist-sans);
+}
+
+.typography-geist-poppins .prose code,
+.typography-geist-poppins .prose pre {
+  font-family: var(--font-geist-mono);
 }
