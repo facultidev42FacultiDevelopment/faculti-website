@@ -1,4 +1,4 @@
-import { NavigationItem } from "../types";
+import { FilterOption, NavigationItem } from "../types";
 
 export const navigationItems: NavigationItem[] = [
     {
@@ -17,4 +17,13 @@ export const navigationItems: NavigationItem[] = [
         name: 'About',
         href: '/about'
     }
+];
+
+export const filterOptions: FilterOption[] = [
+    { id: "video", label: "Videos" },
+    { id: "institute", label: "Institutions" },
+    { id: "academic", label: "Academics" },
+    { id: "topic", label: "Topics" },
+    { id: "research", label: "Research Papers" },
+    { id: "course", label: "Courses" },
 ];

@@ -22,20 +22,7 @@ import {
     SheetFooter,
     SheetClose
 } from "@/components/ui/sheet";
-
-type FilterOption = {
-    id: string;
-    label: string;
-};
-
-const filterOptions: FilterOption[] = [
-    { id: "video", label: "Videos" },
-    { id: "institute", label: "Institutions" },
-    { id: "academic", label: "Academics" },
-    { id: "topic", label: "Topics" },
-    { id: "research", label: "Research Papers" },
-    { id: "course", label: "Courses" },
-];
+import { filterOptions } from "@/lib/constants";
 
 export default function SearchBar() {
     const [query, setQuery] = useState("");
@@ -105,7 +92,7 @@ export default function SearchBar() {
                             variant="outline"
                             size="icon"
                             className={cn(
-                                "bg-secondary/30 border-secondary hover:bg-accent h-full w-[50px] relative",
+                                "bg-secondary/30 hover:bg-accent h-full w-[50px] relative border-none",
                                 activeFilters.length > 0 && "border-primary text-primary"
                             )}
                         >
@@ -225,28 +212,31 @@ export default function SearchBar() {
     return (
         <div className="w-full flex flex-col items-start gap-3 mb-6 sm:mb-8 px-3 sm:px-5 md:px-0 max-w-full sm:max-w-[600px]">
             {/* Search Bar Container */}
-            <div className="flex gap-2 w-full h-[46px] sm:h-[50px]">
+            <div className="flex gap-2 w-full h-[48px] sm:h-[50px]">
                 {/* Search Input */}
                 <div className="relative flex-1 flex items-start justify-start">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="Search"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        className="pl-9 pr-10 bg-foreground/10 h-full rounded-md"
+                        className="pl-4 pr-12 bg-foreground/10 h-full rounded-md text-left border-none"
                     />
-                    {query && (
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground hover:text-foreground"
-                            onClick={() => setQuery("")}
-                            type="button"
-                        >
-                            <X className="h-4 w-4" />
-                        </Button>
-                    )}
+
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                        {query && (
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 text-muted-foreground hover:text-foreground mr-1"
+                                onClick={() => setQuery("")}
+                                type="button"
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        )}
+                        <Search className="h-4 w-4 text-muted-foreground" />
+                    </div>
                 </div>
 
                 {renderFilterButton()}
