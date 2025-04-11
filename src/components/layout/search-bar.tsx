@@ -41,6 +41,7 @@ export default function SearchBar() {
     const [query, setQuery] = useState("");
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
+    const [isExtraSmallScreen, setIsExtraSmallScreen] = useState(false);
     const sheetRef = useRef(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -52,6 +53,7 @@ export default function SearchBar() {
 
             timeoutId = setTimeout(() => {
                 setIsSmallScreen(window.innerWidth < 640);
+                setIsExtraSmallScreen(window.innerWidth < 360);
             }, 100);
         };
 
@@ -161,7 +163,7 @@ export default function SearchBar() {
                             Select filters to narrow your search results
                         </SheetDescription>
                     </SheetHeader>
-                    <div className="py-6 grid grid-cols-2 gap-4">
+                    <div className="py-6 grid grid-cols-1 xs:grid-cols-2 gap-4">
                         {filterOptions.map((option) => (
                             <div
                                 key={option.id}
@@ -186,19 +188,31 @@ export default function SearchBar() {
                             </div>
                         ))}
                     </div>
-                    <SheetFooter className="flex-row justify-center space-x-4 mt-4">
+                    <SheetFooter className={cn(
+                        "flex gap-3 mt-4",
+                        isExtraSmallScreen ? "flex-col" : "flex-row justify-center"
+                    )}>
                         <SheetClose asChild>
                             <Button
                                 variant="outline"
                                 onClick={(e) => clearAllFilters(e)}
-                                className="w-full sm:w-auto"
+                                className={cn(
+                                    isExtraSmallScreen ? "w-full" : "flex-1 max-w-[45%]",
+                                    "h-12"
+                                )}
                                 disabled={activeFilters.length === 0}
                             >
                                 Clear All
                             </Button>
                         </SheetClose>
                         <SheetClose asChild>
-                            <Button variant="default" className="w-full sm:w-auto">
+                            <Button
+                                variant="default"
+                                className={cn(
+                                    isExtraSmallScreen ? "w-full" : "flex-1 max-w-[45%]",
+                                    "h-12"
+                                )}
+                            >
                                 Apply Filters
                             </Button>
                         </SheetClose>
@@ -209,7 +223,7 @@ export default function SearchBar() {
     };
 
     return (
-        <div className="w-full flex flex-col items-start gap-3 mb-6 sm:mb-8 mx-auto px-3 sm:px-5 md:px-0 max-w-full sm:max-w-[600px]">
+        <div className="w-full flex flex-col items-start gap-3 mb-6 sm:mb-8 px-3 sm:px-5 md:px-0 max-w-full sm:max-w-[600px]">
             {/* Search Bar Container */}
             <div className="flex gap-2 w-full h-[46px] sm:h-[50px]">
                 {/* Search Input */}
@@ -234,7 +248,6 @@ export default function SearchBar() {
                         </Button>
                     )}
                 </div>
-
 
                 {renderFilterButton()}
             </div>
