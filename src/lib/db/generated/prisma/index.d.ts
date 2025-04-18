@@ -65,6 +65,24 @@ export type InstitutionToPost = $Result.DefaultSelection<Prisma.$InstitutionToPo
 export type WriterToPost = $Result.DefaultSelection<Prisma.$WriterToPostPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const CategoryType: {
+  PARENT: 'PARENT',
+  DAUGHTER: 'DAUGHTER',
+  SUB: 'SUB'
+};
+
+export type CategoryType = (typeof CategoryType)[keyof typeof CategoryType]
+
+}
+
+export type CategoryType = $Enums.CategoryType
+
+export const CategoryType: typeof $Enums.CategoryType
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -1777,10 +1795,14 @@ export namespace Prisma {
    */
 
   export type CategoryCountOutputType = {
+    daughters: number
+    subs: number
     posts: number
   }
 
   export type CategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    daughters?: boolean | CategoryCountOutputTypeCountDaughtersArgs
+    subs?: boolean | CategoryCountOutputTypeCountSubsArgs
     posts?: boolean | CategoryCountOutputTypeCountPostsArgs
   }
 
@@ -1793,6 +1815,20 @@ export namespace Prisma {
      * Select specific fields to fetch from the CategoryCountOutputType
      */
     select?: CategoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CategoryCountOutputType without action
+   */
+  export type CategoryCountOutputTypeCountDaughtersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CategoryWhereInput
+  }
+
+  /**
+   * CategoryCountOutputType without action
+   */
+  export type CategoryCountOutputTypeCountSubsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CategoryWhereInput
   }
 
   /**
@@ -4411,6 +4447,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    type: $Enums.CategoryType | null
+    parentId: string | null
+    daughterId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4419,6 +4458,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    type: $Enums.CategoryType | null
+    parentId: string | null
+    daughterId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4427,6 +4469,9 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
+    type: number
+    parentId: number
+    daughterId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -4437,6 +4482,9 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    type?: true
+    parentId?: true
+    daughterId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4445,6 +4493,9 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    type?: true
+    parentId?: true
+    daughterId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4453,6 +4504,9 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    type?: true
+    parentId?: true
+    daughterId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4534,6 +4588,9 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    type: $Enums.CategoryType
+    parentId: string | null
+    daughterId: string | null
     createdAt: Date
     updatedAt: Date
     _count: CategoryCountAggregateOutputType | null
@@ -4559,8 +4616,15 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    type?: boolean
+    parentId?: boolean
+    daughterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    parent?: boolean | Category$parentArgs<ExtArgs>
+    daughters?: boolean | Category$daughtersArgs<ExtArgs>
+    daughter?: boolean | Category$daughterArgs<ExtArgs>
+    subs?: boolean | Category$subsArgs<ExtArgs>
     posts?: boolean | Category$postsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
@@ -4569,43 +4633,73 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    type?: boolean
+    parentId?: boolean
+    daughterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    parent?: boolean | Category$parentArgs<ExtArgs>
+    daughter?: boolean | Category$daughterArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     slug?: boolean
+    type?: boolean
+    parentId?: boolean
+    daughterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    parent?: boolean | Category$parentArgs<ExtArgs>
+    daughter?: boolean | Category$daughterArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectScalar = {
     id?: boolean
     name?: boolean
     slug?: boolean
+    type?: boolean
+    parentId?: boolean
+    daughterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt", ExtArgs["result"]["category"]>
+  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "type" | "parentId" | "daughterId" | "createdAt" | "updatedAt", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | Category$parentArgs<ExtArgs>
+    daughters?: boolean | Category$daughtersArgs<ExtArgs>
+    daughter?: boolean | Category$daughterArgs<ExtArgs>
+    subs?: boolean | Category$subsArgs<ExtArgs>
     posts?: boolean | Category$postsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type CategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | Category$parentArgs<ExtArgs>
+    daughter?: boolean | Category$daughterArgs<ExtArgs>
+  }
+  export type CategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | Category$parentArgs<ExtArgs>
+    daughter?: boolean | Category$daughterArgs<ExtArgs>
+  }
 
   export type $CategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Category"
     objects: {
+      parent: Prisma.$CategoryPayload<ExtArgs> | null
+      daughters: Prisma.$CategoryPayload<ExtArgs>[]
+      daughter: Prisma.$CategoryPayload<ExtArgs> | null
+      subs: Prisma.$CategoryPayload<ExtArgs>[]
       posts: Prisma.$CategoryToPostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       slug: string
+      type: $Enums.CategoryType
+      parentId: string | null
+      daughterId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["category"]>
@@ -5002,6 +5096,10 @@ export namespace Prisma {
    */
   export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    parent<T extends Category$parentArgs<ExtArgs> = {}>(args?: Subset<T, Category$parentArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    daughters<T extends Category$daughtersArgs<ExtArgs> = {}>(args?: Subset<T, Category$daughtersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    daughter<T extends Category$daughterArgs<ExtArgs> = {}>(args?: Subset<T, Category$daughterArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    subs<T extends Category$subsArgs<ExtArgs> = {}>(args?: Subset<T, Category$subsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends Category$postsArgs<ExtArgs> = {}>(args?: Subset<T, Category$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryToPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5035,6 +5133,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Category", 'String'>
     readonly name: FieldRef<"Category", 'String'>
     readonly slug: FieldRef<"Category", 'String'>
+    readonly type: FieldRef<"Category", 'CategoryType'>
+    readonly parentId: FieldRef<"Category", 'String'>
+    readonly daughterId: FieldRef<"Category", 'String'>
     readonly createdAt: FieldRef<"Category", 'DateTime'>
     readonly updatedAt: FieldRef<"Category", 'DateTime'>
   }
@@ -5286,6 +5387,10 @@ export namespace Prisma {
      */
     data: CategoryCreateManyInput | CategoryCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5356,6 +5461,10 @@ export namespace Prisma {
      * Limit how many Categories to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5422,6 +5531,92 @@ export namespace Prisma {
      * Limit how many Categories to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Category.parent
+   */
+  export type Category$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: CategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: CategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryInclude<ExtArgs> | null
+    where?: CategoryWhereInput
+  }
+
+  /**
+   * Category.daughters
+   */
+  export type Category$daughtersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: CategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: CategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryInclude<ExtArgs> | null
+    where?: CategoryWhereInput
+    orderBy?: CategoryOrderByWithRelationInput | CategoryOrderByWithRelationInput[]
+    cursor?: CategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CategoryScalarFieldEnum | CategoryScalarFieldEnum[]
+  }
+
+  /**
+   * Category.daughter
+   */
+  export type Category$daughterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: CategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: CategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryInclude<ExtArgs> | null
+    where?: CategoryWhereInput
+  }
+
+  /**
+   * Category.subs
+   */
+  export type Category$subsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: CategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: CategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryInclude<ExtArgs> | null
+    where?: CategoryWhereInput
+    orderBy?: CategoryOrderByWithRelationInput | CategoryOrderByWithRelationInput[]
+    cursor?: CategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CategoryScalarFieldEnum | CategoryScalarFieldEnum[]
   }
 
   /**
@@ -12855,6 +13050,9 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
+    type: 'type',
+    parentId: 'parentId',
+    daughterId: 'daughterId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -12985,7 +13183,9 @@ export namespace Prisma {
   export const CategoryOrderByRelevanceFieldEnum: {
     id: 'id',
     name: 'name',
-    slug: 'slug'
+    slug: 'slug',
+    parentId: 'parentId',
+    daughterId: 'daughterId'
   };
 
   export type CategoryOrderByRelevanceFieldEnum = (typeof CategoryOrderByRelevanceFieldEnum)[keyof typeof CategoryOrderByRelevanceFieldEnum]
@@ -13095,6 +13295,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CategoryType'
+   */
+  export type EnumCategoryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CategoryType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CategoryType[]'
+   */
+  export type ListEnumCategoryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CategoryType[]'>
     
 
 
@@ -13333,8 +13547,15 @@ export namespace Prisma {
     id?: StringFilter<"Category"> | string
     name?: StringFilter<"Category"> | string
     slug?: StringFilter<"Category"> | string
+    type?: EnumCategoryTypeFilter<"Category"> | $Enums.CategoryType
+    parentId?: StringNullableFilter<"Category"> | string | null
+    daughterId?: StringNullableFilter<"Category"> | string | null
     createdAt?: DateTimeFilter<"Category"> | Date | string
     updatedAt?: DateTimeFilter<"Category"> | Date | string
+    parent?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
+    daughters?: CategoryListRelationFilter
+    daughter?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
+    subs?: CategoryListRelationFilter
     posts?: CategoryToPostListRelationFilter
   }
 
@@ -13342,28 +13563,45 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    type?: SortOrder
+    parentId?: SortOrderInput | SortOrder
+    daughterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    parent?: CategoryOrderByWithRelationInput
+    daughters?: CategoryOrderByRelationAggregateInput
+    daughter?: CategoryOrderByWithRelationInput
+    subs?: CategoryOrderByRelationAggregateInput
     posts?: CategoryToPostOrderByRelationAggregateInput
     _relevance?: CategoryOrderByRelevanceInput
   }
 
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    slug?: string
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
     name?: StringFilter<"Category"> | string
+    slug?: StringFilter<"Category"> | string
+    type?: EnumCategoryTypeFilter<"Category"> | $Enums.CategoryType
+    parentId?: StringNullableFilter<"Category"> | string | null
+    daughterId?: StringNullableFilter<"Category"> | string | null
     createdAt?: DateTimeFilter<"Category"> | Date | string
     updatedAt?: DateTimeFilter<"Category"> | Date | string
+    parent?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
+    daughters?: CategoryListRelationFilter
+    daughter?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
+    subs?: CategoryListRelationFilter
     posts?: CategoryToPostListRelationFilter
-  }, "id" | "slug">
+  }, "id">
 
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    type?: SortOrder
+    parentId?: SortOrderInput | SortOrder
+    daughterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CategoryCountOrderByAggregateInput
@@ -13378,6 +13616,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Category"> | string
     name?: StringWithAggregatesFilter<"Category"> | string
     slug?: StringWithAggregatesFilter<"Category"> | string
+    type?: EnumCategoryTypeWithAggregatesFilter<"Category"> | $Enums.CategoryType
+    parentId?: StringNullableWithAggregatesFilter<"Category"> | string | null
+    daughterId?: StringNullableWithAggregatesFilter<"Category"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
   }
@@ -13989,8 +14230,13 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    type: $Enums.CategoryType
     createdAt?: Date | string
     updatedAt?: Date | string
+    parent?: CategoryCreateNestedOneWithoutDaughtersInput
+    daughters?: CategoryCreateNestedManyWithoutParentInput
+    daughter?: CategoryCreateNestedOneWithoutSubsInput
+    subs?: CategoryCreateNestedManyWithoutDaughterInput
     posts?: CategoryToPostCreateNestedManyWithoutCategoryInput
   }
 
@@ -13998,8 +14244,13 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    type: $Enums.CategoryType
+    parentId?: string | null
+    daughterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    daughters?: CategoryUncheckedCreateNestedManyWithoutParentInput
+    subs?: CategoryUncheckedCreateNestedManyWithoutDaughterInput
     posts?: CategoryToPostUncheckedCreateNestedManyWithoutCategoryInput
   }
 
@@ -14007,8 +14258,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: CategoryUpdateOneWithoutDaughtersNestedInput
+    daughters?: CategoryUpdateManyWithoutParentNestedInput
+    daughter?: CategoryUpdateOneWithoutSubsNestedInput
+    subs?: CategoryUpdateManyWithoutDaughterNestedInput
     posts?: CategoryToPostUpdateManyWithoutCategoryNestedInput
   }
 
@@ -14016,8 +14272,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    daughterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    daughters?: CategoryUncheckedUpdateManyWithoutParentNestedInput
+    subs?: CategoryUncheckedUpdateManyWithoutDaughterNestedInput
     posts?: CategoryToPostUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
@@ -14025,6 +14286,9 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    type: $Enums.CategoryType
+    parentId?: string | null
+    daughterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14033,6 +14297,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14041,6 +14306,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    daughterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14694,6 +14962,28 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumCategoryTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CategoryType | EnumCategoryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryTypeFilter<$PrismaModel> | $Enums.CategoryType
+  }
+
+  export type CategoryNullableScalarRelationFilter = {
+    is?: CategoryWhereInput | null
+    isNot?: CategoryWhereInput | null
+  }
+
+  export type CategoryListRelationFilter = {
+    every?: CategoryWhereInput
+    some?: CategoryWhereInput
+    none?: CategoryWhereInput
+  }
+
+  export type CategoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type CategoryOrderByRelevanceInput = {
     fields: CategoryOrderByRelevanceFieldEnum | CategoryOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -14704,6 +14994,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    type?: SortOrder
+    parentId?: SortOrder
+    daughterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14712,6 +15005,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    type?: SortOrder
+    parentId?: SortOrder
+    daughterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14720,8 +15016,21 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    type?: SortOrder
+    parentId?: SortOrder
+    daughterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EnumCategoryTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CategoryType | EnumCategoryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryTypeWithAggregatesFilter<$PrismaModel> | $Enums.CategoryType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCategoryTypeFilter<$PrismaModel>
+    _max?: NestedEnumCategoryTypeFilter<$PrismaModel>
   }
 
   export type TagOrderByRelevanceInput = {
@@ -15194,6 +15503,32 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type CategoryCreateNestedOneWithoutDaughtersInput = {
+    create?: XOR<CategoryCreateWithoutDaughtersInput, CategoryUncheckedCreateWithoutDaughtersInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutDaughtersInput
+    connect?: CategoryWhereUniqueInput
+  }
+
+  export type CategoryCreateNestedManyWithoutParentInput = {
+    create?: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput> | CategoryCreateWithoutParentInput[] | CategoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutParentInput | CategoryCreateOrConnectWithoutParentInput[]
+    createMany?: CategoryCreateManyParentInputEnvelope
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+  }
+
+  export type CategoryCreateNestedOneWithoutSubsInput = {
+    create?: XOR<CategoryCreateWithoutSubsInput, CategoryUncheckedCreateWithoutSubsInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutSubsInput
+    connect?: CategoryWhereUniqueInput
+  }
+
+  export type CategoryCreateNestedManyWithoutDaughterInput = {
+    create?: XOR<CategoryCreateWithoutDaughterInput, CategoryUncheckedCreateWithoutDaughterInput> | CategoryCreateWithoutDaughterInput[] | CategoryUncheckedCreateWithoutDaughterInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutDaughterInput | CategoryCreateOrConnectWithoutDaughterInput[]
+    createMany?: CategoryCreateManyDaughterInputEnvelope
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+  }
+
   export type CategoryToPostCreateNestedManyWithoutCategoryInput = {
     create?: XOR<CategoryToPostCreateWithoutCategoryInput, CategoryToPostUncheckedCreateWithoutCategoryInput> | CategoryToPostCreateWithoutCategoryInput[] | CategoryToPostUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: CategoryToPostCreateOrConnectWithoutCategoryInput | CategoryToPostCreateOrConnectWithoutCategoryInput[]
@@ -15201,11 +15536,77 @@ export namespace Prisma {
     connect?: CategoryToPostWhereUniqueInput | CategoryToPostWhereUniqueInput[]
   }
 
+  export type CategoryUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput> | CategoryCreateWithoutParentInput[] | CategoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutParentInput | CategoryCreateOrConnectWithoutParentInput[]
+    createMany?: CategoryCreateManyParentInputEnvelope
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+  }
+
+  export type CategoryUncheckedCreateNestedManyWithoutDaughterInput = {
+    create?: XOR<CategoryCreateWithoutDaughterInput, CategoryUncheckedCreateWithoutDaughterInput> | CategoryCreateWithoutDaughterInput[] | CategoryUncheckedCreateWithoutDaughterInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutDaughterInput | CategoryCreateOrConnectWithoutDaughterInput[]
+    createMany?: CategoryCreateManyDaughterInputEnvelope
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+  }
+
   export type CategoryToPostUncheckedCreateNestedManyWithoutCategoryInput = {
     create?: XOR<CategoryToPostCreateWithoutCategoryInput, CategoryToPostUncheckedCreateWithoutCategoryInput> | CategoryToPostCreateWithoutCategoryInput[] | CategoryToPostUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: CategoryToPostCreateOrConnectWithoutCategoryInput | CategoryToPostCreateOrConnectWithoutCategoryInput[]
     createMany?: CategoryToPostCreateManyCategoryInputEnvelope
     connect?: CategoryToPostWhereUniqueInput | CategoryToPostWhereUniqueInput[]
+  }
+
+  export type EnumCategoryTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CategoryType
+  }
+
+  export type CategoryUpdateOneWithoutDaughtersNestedInput = {
+    create?: XOR<CategoryCreateWithoutDaughtersInput, CategoryUncheckedCreateWithoutDaughtersInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutDaughtersInput
+    upsert?: CategoryUpsertWithoutDaughtersInput
+    disconnect?: CategoryWhereInput | boolean
+    delete?: CategoryWhereInput | boolean
+    connect?: CategoryWhereUniqueInput
+    update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutDaughtersInput, CategoryUpdateWithoutDaughtersInput>, CategoryUncheckedUpdateWithoutDaughtersInput>
+  }
+
+  export type CategoryUpdateManyWithoutParentNestedInput = {
+    create?: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput> | CategoryCreateWithoutParentInput[] | CategoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutParentInput | CategoryCreateOrConnectWithoutParentInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutParentInput | CategoryUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: CategoryCreateManyParentInputEnvelope
+    set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutParentInput | CategoryUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutParentInput | CategoryUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
+  }
+
+  export type CategoryUpdateOneWithoutSubsNestedInput = {
+    create?: XOR<CategoryCreateWithoutSubsInput, CategoryUncheckedCreateWithoutSubsInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutSubsInput
+    upsert?: CategoryUpsertWithoutSubsInput
+    disconnect?: CategoryWhereInput | boolean
+    delete?: CategoryWhereInput | boolean
+    connect?: CategoryWhereUniqueInput
+    update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutSubsInput, CategoryUpdateWithoutSubsInput>, CategoryUncheckedUpdateWithoutSubsInput>
+  }
+
+  export type CategoryUpdateManyWithoutDaughterNestedInput = {
+    create?: XOR<CategoryCreateWithoutDaughterInput, CategoryUncheckedCreateWithoutDaughterInput> | CategoryCreateWithoutDaughterInput[] | CategoryUncheckedCreateWithoutDaughterInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutDaughterInput | CategoryCreateOrConnectWithoutDaughterInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutDaughterInput | CategoryUpsertWithWhereUniqueWithoutDaughterInput[]
+    createMany?: CategoryCreateManyDaughterInputEnvelope
+    set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutDaughterInput | CategoryUpdateWithWhereUniqueWithoutDaughterInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutDaughterInput | CategoryUpdateManyWithWhereWithoutDaughterInput[]
+    deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
   export type CategoryToPostUpdateManyWithoutCategoryNestedInput = {
@@ -15220,6 +15621,34 @@ export namespace Prisma {
     update?: CategoryToPostUpdateWithWhereUniqueWithoutCategoryInput | CategoryToPostUpdateWithWhereUniqueWithoutCategoryInput[]
     updateMany?: CategoryToPostUpdateManyWithWhereWithoutCategoryInput | CategoryToPostUpdateManyWithWhereWithoutCategoryInput[]
     deleteMany?: CategoryToPostScalarWhereInput | CategoryToPostScalarWhereInput[]
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput> | CategoryCreateWithoutParentInput[] | CategoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutParentInput | CategoryCreateOrConnectWithoutParentInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutParentInput | CategoryUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: CategoryCreateManyParentInputEnvelope
+    set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutParentInput | CategoryUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutParentInput | CategoryUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutDaughterNestedInput = {
+    create?: XOR<CategoryCreateWithoutDaughterInput, CategoryUncheckedCreateWithoutDaughterInput> | CategoryCreateWithoutDaughterInput[] | CategoryUncheckedCreateWithoutDaughterInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutDaughterInput | CategoryCreateOrConnectWithoutDaughterInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutDaughterInput | CategoryUpsertWithWhereUniqueWithoutDaughterInput[]
+    createMany?: CategoryCreateManyDaughterInputEnvelope
+    set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutDaughterInput | CategoryUpdateWithWhereUniqueWithoutDaughterInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutDaughterInput | CategoryUpdateManyWithWhereWithoutDaughterInput[]
+    deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
   export type CategoryToPostUncheckedUpdateManyWithoutCategoryNestedInput = {
@@ -15639,6 +16068,23 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumCategoryTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CategoryType | EnumCategoryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryTypeFilter<$PrismaModel> | $Enums.CategoryType
+  }
+
+  export type NestedEnumCategoryTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CategoryType | EnumCategoryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CategoryType[] | ListEnumCategoryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryTypeWithAggregatesFilter<$PrismaModel> | $Enums.CategoryType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCategoryTypeFilter<$PrismaModel>
+    _max?: NestedEnumCategoryTypeFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutPostsInput = {
     id: string
     name: string
@@ -15968,6 +16414,140 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Post"> | Date | string
   }
 
+  export type CategoryCreateWithoutDaughtersInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: CategoryCreateNestedOneWithoutDaughtersInput
+    daughter?: CategoryCreateNestedOneWithoutSubsInput
+    subs?: CategoryCreateNestedManyWithoutDaughterInput
+    posts?: CategoryToPostCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedCreateWithoutDaughtersInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    parentId?: string | null
+    daughterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subs?: CategoryUncheckedCreateNestedManyWithoutDaughterInput
+    posts?: CategoryToPostUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutDaughtersInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutDaughtersInput, CategoryUncheckedCreateWithoutDaughtersInput>
+  }
+
+  export type CategoryCreateWithoutParentInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    daughters?: CategoryCreateNestedManyWithoutParentInput
+    daughter?: CategoryCreateNestedOneWithoutSubsInput
+    subs?: CategoryCreateNestedManyWithoutDaughterInput
+    posts?: CategoryToPostCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedCreateWithoutParentInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    daughterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    daughters?: CategoryUncheckedCreateNestedManyWithoutParentInput
+    subs?: CategoryUncheckedCreateNestedManyWithoutDaughterInput
+    posts?: CategoryToPostUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutParentInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput>
+  }
+
+  export type CategoryCreateManyParentInputEnvelope = {
+    data: CategoryCreateManyParentInput | CategoryCreateManyParentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CategoryCreateWithoutSubsInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: CategoryCreateNestedOneWithoutDaughtersInput
+    daughters?: CategoryCreateNestedManyWithoutParentInput
+    daughter?: CategoryCreateNestedOneWithoutSubsInput
+    posts?: CategoryToPostCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedCreateWithoutSubsInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    parentId?: string | null
+    daughterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    daughters?: CategoryUncheckedCreateNestedManyWithoutParentInput
+    posts?: CategoryToPostUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutSubsInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutSubsInput, CategoryUncheckedCreateWithoutSubsInput>
+  }
+
+  export type CategoryCreateWithoutDaughterInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: CategoryCreateNestedOneWithoutDaughtersInput
+    daughters?: CategoryCreateNestedManyWithoutParentInput
+    subs?: CategoryCreateNestedManyWithoutDaughterInput
+    posts?: CategoryToPostCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedCreateWithoutDaughterInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    parentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    daughters?: CategoryUncheckedCreateNestedManyWithoutParentInput
+    subs?: CategoryUncheckedCreateNestedManyWithoutDaughterInput
+    posts?: CategoryToPostUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutDaughterInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutDaughterInput, CategoryUncheckedCreateWithoutDaughterInput>
+  }
+
+  export type CategoryCreateManyDaughterInputEnvelope = {
+    data: CategoryCreateManyDaughterInput | CategoryCreateManyDaughterInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CategoryToPostCreateWithoutCategoryInput = {
     post: PostCreateNestedOneWithoutCategoriesInput
   }
@@ -15984,6 +16564,126 @@ export namespace Prisma {
   export type CategoryToPostCreateManyCategoryInputEnvelope = {
     data: CategoryToPostCreateManyCategoryInput | CategoryToPostCreateManyCategoryInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CategoryUpsertWithoutDaughtersInput = {
+    update: XOR<CategoryUpdateWithoutDaughtersInput, CategoryUncheckedUpdateWithoutDaughtersInput>
+    create: XOR<CategoryCreateWithoutDaughtersInput, CategoryUncheckedCreateWithoutDaughtersInput>
+    where?: CategoryWhereInput
+  }
+
+  export type CategoryUpdateToOneWithWhereWithoutDaughtersInput = {
+    where?: CategoryWhereInput
+    data: XOR<CategoryUpdateWithoutDaughtersInput, CategoryUncheckedUpdateWithoutDaughtersInput>
+  }
+
+  export type CategoryUpdateWithoutDaughtersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: CategoryUpdateOneWithoutDaughtersNestedInput
+    daughter?: CategoryUpdateOneWithoutSubsNestedInput
+    subs?: CategoryUpdateManyWithoutDaughterNestedInput
+    posts?: CategoryToPostUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutDaughtersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    daughterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subs?: CategoryUncheckedUpdateManyWithoutDaughterNestedInput
+    posts?: CategoryToPostUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUpsertWithWhereUniqueWithoutParentInput = {
+    where: CategoryWhereUniqueInput
+    update: XOR<CategoryUpdateWithoutParentInput, CategoryUncheckedUpdateWithoutParentInput>
+    create: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput>
+  }
+
+  export type CategoryUpdateWithWhereUniqueWithoutParentInput = {
+    where: CategoryWhereUniqueInput
+    data: XOR<CategoryUpdateWithoutParentInput, CategoryUncheckedUpdateWithoutParentInput>
+  }
+
+  export type CategoryUpdateManyWithWhereWithoutParentInput = {
+    where: CategoryScalarWhereInput
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutParentInput>
+  }
+
+  export type CategoryScalarWhereInput = {
+    AND?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
+    OR?: CategoryScalarWhereInput[]
+    NOT?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
+    id?: StringFilter<"Category"> | string
+    name?: StringFilter<"Category"> | string
+    slug?: StringFilter<"Category"> | string
+    type?: EnumCategoryTypeFilter<"Category"> | $Enums.CategoryType
+    parentId?: StringNullableFilter<"Category"> | string | null
+    daughterId?: StringNullableFilter<"Category"> | string | null
+    createdAt?: DateTimeFilter<"Category"> | Date | string
+    updatedAt?: DateTimeFilter<"Category"> | Date | string
+  }
+
+  export type CategoryUpsertWithoutSubsInput = {
+    update: XOR<CategoryUpdateWithoutSubsInput, CategoryUncheckedUpdateWithoutSubsInput>
+    create: XOR<CategoryCreateWithoutSubsInput, CategoryUncheckedCreateWithoutSubsInput>
+    where?: CategoryWhereInput
+  }
+
+  export type CategoryUpdateToOneWithWhereWithoutSubsInput = {
+    where?: CategoryWhereInput
+    data: XOR<CategoryUpdateWithoutSubsInput, CategoryUncheckedUpdateWithoutSubsInput>
+  }
+
+  export type CategoryUpdateWithoutSubsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: CategoryUpdateOneWithoutDaughtersNestedInput
+    daughters?: CategoryUpdateManyWithoutParentNestedInput
+    daughter?: CategoryUpdateOneWithoutSubsNestedInput
+    posts?: CategoryToPostUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutSubsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    daughterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    daughters?: CategoryUncheckedUpdateManyWithoutParentNestedInput
+    posts?: CategoryToPostUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUpsertWithWhereUniqueWithoutDaughterInput = {
+    where: CategoryWhereUniqueInput
+    update: XOR<CategoryUpdateWithoutDaughterInput, CategoryUncheckedUpdateWithoutDaughterInput>
+    create: XOR<CategoryCreateWithoutDaughterInput, CategoryUncheckedCreateWithoutDaughterInput>
+  }
+
+  export type CategoryUpdateWithWhereUniqueWithoutDaughterInput = {
+    where: CategoryWhereUniqueInput
+    data: XOR<CategoryUpdateWithoutDaughterInput, CategoryUncheckedUpdateWithoutDaughterInput>
+  }
+
+  export type CategoryUpdateManyWithWhereWithoutDaughterInput = {
+    where: CategoryScalarWhereInput
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutDaughterInput>
   }
 
   export type CategoryToPostUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -16163,16 +16863,26 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    type: $Enums.CategoryType
     createdAt?: Date | string
     updatedAt?: Date | string
+    parent?: CategoryCreateNestedOneWithoutDaughtersInput
+    daughters?: CategoryCreateNestedManyWithoutParentInput
+    daughter?: CategoryCreateNestedOneWithoutSubsInput
+    subs?: CategoryCreateNestedManyWithoutDaughterInput
   }
 
   export type CategoryUncheckedCreateWithoutPostsInput = {
     id: string
     name: string
     slug: string
+    type: $Enums.CategoryType
+    parentId?: string | null
+    daughterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    daughters?: CategoryUncheckedCreateNestedManyWithoutParentInput
+    subs?: CategoryUncheckedCreateNestedManyWithoutDaughterInput
   }
 
   export type CategoryCreateOrConnectWithoutPostsInput = {
@@ -16256,16 +16966,26 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: CategoryUpdateOneWithoutDaughtersNestedInput
+    daughters?: CategoryUpdateManyWithoutParentNestedInput
+    daughter?: CategoryUpdateOneWithoutSubsNestedInput
+    subs?: CategoryUpdateManyWithoutDaughterNestedInput
   }
 
   export type CategoryUncheckedUpdateWithoutPostsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    daughterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    daughters?: CategoryUncheckedUpdateManyWithoutParentNestedInput
+    subs?: CategoryUncheckedUpdateManyWithoutDaughterNestedInput
   }
 
   export type PostCreateWithoutTagsInput = {
@@ -16920,8 +17640,100 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CategoryCreateManyParentInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    daughterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CategoryCreateManyDaughterInput = {
+    id: string
+    name: string
+    slug: string
+    type: $Enums.CategoryType
+    parentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type CategoryToPostCreateManyCategoryInput = {
     postId: string
+  }
+
+  export type CategoryUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    daughters?: CategoryUpdateManyWithoutParentNestedInput
+    daughter?: CategoryUpdateOneWithoutSubsNestedInput
+    subs?: CategoryUpdateManyWithoutDaughterNestedInput
+    posts?: CategoryToPostUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    daughterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    daughters?: CategoryUncheckedUpdateManyWithoutParentNestedInput
+    subs?: CategoryUncheckedUpdateManyWithoutDaughterNestedInput
+    posts?: CategoryToPostUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    daughterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CategoryUpdateWithoutDaughterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: CategoryUpdateOneWithoutDaughtersNestedInput
+    daughters?: CategoryUpdateManyWithoutParentNestedInput
+    subs?: CategoryUpdateManyWithoutDaughterNestedInput
+    posts?: CategoryToPostUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutDaughterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    daughters?: CategoryUncheckedUpdateManyWithoutParentNestedInput
+    subs?: CategoryUncheckedUpdateManyWithoutDaughterNestedInput
+    posts?: CategoryToPostUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutDaughterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CategoryToPostUpdateWithoutCategoryInput = {

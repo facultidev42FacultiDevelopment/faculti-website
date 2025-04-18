@@ -121,3 +121,47 @@ export interface TagPostsResponse {
   take: number;
   total: number;
 }
+
+export interface CategoryPostGroup {
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+    parentId: string | null;
+  };
+  posts: PostResponse[];
+}
+
+export interface FilterOption {
+  id: string;
+  name: string;
+  slug: string;
+  type?: string;
+}
+
+
+export interface PaginationInfo {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+export interface ParentCategoryResponse {
+  parentCategory: {
+    id: string;
+    name: string;
+    slug: string;
+    type?: string;
+  };
+  daughterCategory?: {
+    id: string;
+    name: string;
+    slug: string;
+    type?: string;
+  } | null;
+  posts: PostResponse[];
+  pagination: PaginationInfo;
+  filterOptions: FilterOption[];
+}

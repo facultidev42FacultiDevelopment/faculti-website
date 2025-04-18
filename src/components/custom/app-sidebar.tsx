@@ -78,10 +78,6 @@ const SUPPORT_LINKS = [
   { name: "Terms", icon: <FileText className="h-4 w-4" />, href: "/terms" },
 ];
 
-const MAIN_MENU = [
-  { name: "Home", icon: <BiSolidHome className="h-5 w-5" />, href: "/" },
-];
-
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [desktopOpen, setDesktopOpen] = useState(false);
 
@@ -164,99 +160,8 @@ export function AppSidebar() {
             isCollapsed ? "px-0" : "px-2"
           )}>
 
-            {/* Main Navigation Items */}
-            <div className="space-y-2">
-              {MAIN_MENU.map((item) => {
-                const isActive = item.href === "/"
-                  ? pathname === item.href
-                  : pathname.startsWith(item.href);
 
-                if (isCollapsed) {
-                  return (
-                    <TooltipProvider key={item.name}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Link
-                            href={item.href}
-                            className={cn(
-                              "flex justify-center items-center rounded-lg p-2 transition-all",
-                              "hover:bg-secondary/40 w-full group",
-                              isActive
-                                ? "bg-secondary-foreground/5"
-                                : "bg-transparent"
-                            )}
-                          >
-                            <motion.span
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.98 }}
-                              className={cn(
-                                "rounded-md p-2 transition-all duration-300",
-                                isActive
-                                  ? "bg-destructive text-primary-foreground shadow-md shadow-primary/20"
-                                  : "bg-secondary/60 text-sidebar-foreground/70 group-hover:bg-secondary/80 group-hover:text-sidebar-foreground/90"
-                              )}
-                            >
-                              {item.icon}
-                            </motion.span>
-                          </Link>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          side="right"
-                          className="bg-popover/90 backdrop-blur-lg border-sidebar-border shadow-lg"
-                        >
-                          {item.name}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  );
-                }
 
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-5 rounded-lg py-3 px-3 transition-all group",
-                      "hover:bg-secondary/20",
-                      isActive
-                        ? "bg-destructive/10"
-                        : "bg-transparent"
-                    )}
-                  >
-                    <motion.span
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={cn(
-                        "rounded-md p-2 transition-all duration-300",
-                        isActive
-                          ? "bg-destructive text-primary-foreground shadow-md shadow-primary/20"
-                          : "bg-secondary/60 text-sidebar-foreground/70 group-hover:bg-secondary/80 group-hover:text-sidebar-foreground/90"
-                      )}
-                    >
-                      {item.icon}
-                    </motion.span>
-                    <span className={cn(
-                      "font-medium transition-colors duration-200",
-                      isActive
-                        ? "font-semibold text-white"
-                        : "font-medium text-sidebar-foreground/80 group-hover:text-sidebar-foreground/95"
-                    )}>
-                      {item.name}
-                    </span>
-
-                    {isActive && (
-                      <motion.div
-                        className="absolute right-0 w-1 h-8 bg-destructive rounded-l-md"
-                        layoutId="activeIndicator"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
 
             {/* Categories Section */}
             <div className={cn(

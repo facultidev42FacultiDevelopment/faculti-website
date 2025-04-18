@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
     const transformedPosts = posts.map((post) => transformPost(post));
 
     CACHE.set(cacheKey, { data: transformedPosts, timestamp: Date.now() });
-    console.log(transformedPosts[0])
+
     return NextResponse.json(transformedPosts, {
       headers: {
         'Cache-Control': 'max-age=3600, s-maxage=3600',

@@ -154,6 +154,9 @@ exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  type: 'type',
+  parentId: 'parentId',
+  daughterId: 'daughterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -245,7 +248,9 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
 exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  slug: 'slug'
+  slug: 'slug',
+  parentId: 'parentId',
+  daughterId: 'daughterId'
 };
 
 exports.Prisma.TagOrderByRelevanceFieldEnum = {
@@ -286,7 +291,11 @@ exports.Prisma.WriterToPostOrderByRelevanceFieldEnum = {
   postId: 'postId',
   writerId: 'writerId'
 };
-
+exports.CategoryType = exports.$Enums.CategoryType = {
+  PARENT: 'PARENT',
+  DAUGHTER: 'DAUGHTER',
+  SUB: 'SUB'
+};
 
 exports.Prisma.ModelName = {
   Post: 'Post',

@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/lib/db/generated/prisma"
+  provider        = "prisma-client-js"
+  output          = "../src/lib/db/generated/prisma"
   previewFeatures = ["fullTextSearchPostgres"]
 }
 
@@ -9,186 +9,192 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Stores blog posts or articles with associated metadata
+//
+// == MODELS ==
+//
+
+// Posts or articles
 model Post {
-  id             String    @id 
-  title          String
-  content        String    @db.Text
-  excerpt        String?   @db.Text
-  imageUrl       String?   @map("image_url")
-  date           DateTime
-  dateGmt        DateTime  @map("date_gmt")
-  modified       DateTime?
-  modifiedGmt    DateTime? @map("modified_gmt")
-  slug           String    @unique
-  status         String    @default("publish")
-  commentStatus  String    @map("comment_status")
-  pingStatus     String    @map("ping_status")
-  guid           String?
-  menuOrder      Int       @default(0) @map("menu_order")
-  vimeoVideoId   String?   @map("vimeo_video_id") 
-  
+  id            String    @id
+  title         String
+  content       String    @db.Text
+  excerpt       String?   @db.Text
+  imageUrl      String?   @map("image_url")
+  date          DateTime
+  dateGmt       DateTime  @map("date_gmt")
+  modified      DateTime?
+  modifiedGmt   DateTime? @map("modified_gmt")
+  slug          String    @unique
+  status        String    @default("publish")
+  commentStatus String    @map("comment_status")
+  pingStatus    String    @map("ping_status")
+  guid          String?
+  menuOrder     Int       @default(0) @map("menu_order")
+  vimeoVideoId  String?   @map("vimeo_video_id")
+
   // Relations
-  authorId       String    @map("author_id")
-  author         User      @relation(fields: [authorId], references: [id])
-  categories     CategoryToPost[]
-  tags           TagToPost[]
-  institutions   InstitutionToPost[]
-  writers        WriterToPost[]
-  
+  authorId      String    @map("author_id")
+  author        User      @relation(fields: [authorId], references: [id])
+  categories    CategoryToPost[]
+  tags          TagToPost[]
+  institutions  InstitutionToPost[]
+  writers       WriterToPost[]
+
   // Timestamps
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt      @map("updated_at")
 
-  // Full-text search (requires PostgreSQL tsvector column)
-  searchVector   Unsupported("tsvector")? @map("search_vector") 
+  // Full-text search (PostgreSQL only)
+  searchVector  Unsupported("tsvector")? @map("search_vector")
 
-  // Indexes for query performance
+  // Indexes
   @@index([authorId])
   @@index([slug])
   @@index([date])
   @@index([status])
-  @@index([vimeoVideoId]) 
+  @@index([vimeoVideoId])
   @@index([searchVector], type: Gin)
-  
+
   @@map("posts")
 }
 
-// Represents users who author posts
+// Authors
 model User {
-  id             String    @id
-  name           String
-  slug           String    @unique
-  email          String?   @unique
-  url            String?
-  avatarUrl      String?   @map("avatar_url") 
-  
-  // Relations
-  posts          Post[]
-  
-  // Timestamps
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  id        String  @id
+  name      String
+  slug      String  @unique
+  email     String? @unique
+  url       String?
+  avatarUrl String? @map("avatar_url")
+
+  posts     Post[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
 
   @@index([slug])
   @@map("users")
 }
 
-// Categories for classifying posts
+// Categories
 model Category {
-  id             String    @id
-  name           String
-  slug           String    @unique
-  
-  // Relations
-  posts          CategoryToPost[]
-  
-  // Timestamps
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  id        String        @id
+  name      String
+  slug      String
+  type      CategoryType
 
-  @@index([slug])
-  @@map("categories")
+  parentId  String?
+  parent    Category?     @relation("ParentToDaughter", fields: [parentId], references: [id])
+  daughters Category[]    @relation("ParentToDaughter")
+
+  daughterId String?
+  daughter   Category?    @relation("DaughterToSub", fields: [daughterId], references: [id])
+  subs       Category[]   @relation("DaughterToSub")
+
+  posts     CategoryToPost[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// Tags for tagging posts
+enum CategoryType {
+  PARENT
+  DAUGHTER
+  SUB
+}
+
+// Tags
 model Tag {
-  id             String    @id
-  name           String
-  slug           String    @unique
-  
-  // Relations
-  posts          TagToPost[]
-  
-  // Timestamps
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  id        String  @id
+  name      String
+  slug      String  @unique
+
+  posts     TagToPost[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
 
   @@index([slug])
   @@map("tags")
 }
 
-// Institutions associated with posts
+// Institutions
 model Institution {
-  id             String    @id
-  name           String
-  slug           String    @unique
-  
-  // Relations
-  posts          InstitutionToPost[]
-  
-  // Timestamps
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  id        String  @id
+  name      String
+  slug      String  @unique
+
+  posts     InstitutionToPost[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
 
   @@index([slug])
   @@map("institutions")
 }
 
-// Writers who contribute to posts (not necessarily users)
+// Writers
 model Writer {
-  id             String    @id
-  name           String
-  slug           String    @unique
-  imgUrl         String?   @map("img_url")
-  
-  // Relations
-  posts          WriterToPost[]
-  
-  // Timestamps
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  id        String  @id
+  name      String
+  slug      String  @unique
+  imgUrl    String? @map("img_url")
+
+  posts     WriterToPost[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
 
   @@index([slug])
   @@map("writers")
 }
 
-// Junction table for Post-Category many-to-many relation
+//
+// == M2M RELATION MODELS ==
+//
+
 model CategoryToPost {
-  post           Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId         String    @map("post_id")
-  category       Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId     String    @map("category_id")
-  
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId     String   @map("post_id")
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String   @map("category_id")
+
   @@id([postId, categoryId])
   @@index([postId])
   @@index([categoryId])
   @@map("category_to_post")
 }
 
-// Junction table for Post-Tag many-to-many relation
 model TagToPost {
-  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId         String   @map("post_id")
-  tag            Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  tagId          String   @map("tag_id")
-  
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String @map("post_id")
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String @map("tag_id")
+
   @@id([postId, tagId])
   @@index([postId])
   @@index([tagId])
   @@map("tag_to_post")
 }
 
-// Junction table for Post-Institution many-to-many relation
 model InstitutionToPost {
-  post           Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId         String      @map("post_id")
-  institution    Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
-  institutionId  String      @map("institution_id")
-  
+  post         Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId       String      @map("post_id")
+  institution  Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  institutionId String     @map("institution_id")
+
   @@id([postId, institutionId])
   @@index([postId])
   @@index([institutionId])
   @@map("institution_to_post")
 }
 
-// Junction table for Post-Writer many-to-many relation
 model WriterToPost {
-  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId         String   @map("post_id")
-  writer         Writer   @relation(fields: [writerId], references: [id], onDelete: Cascade)
-  writerId       String   @map("writer_id")
-  
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId   String @map("post_id")
+  writer   Writer @relation(fields: [writerId], references: [id], onDelete: Cascade)
+  writerId String @map("writer_id")
+
   @@id([postId, writerId])
   @@index([postId])
   @@index([writerId])

@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
+import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin'
 
 const nextConfig: NextConfig = {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()]
+    }
+
+    return config
+  },
+
   images: {
     remotePatterns: [
       {
@@ -13,7 +22,6 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
-      // Add this new pattern for faculti.net
       {
         protocol: "https",
         hostname: "faculti.net",
@@ -21,6 +29,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+
 };
 
 export default nextConfig;
